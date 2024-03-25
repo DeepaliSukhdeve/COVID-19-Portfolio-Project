@@ -1,8 +1,5 @@
 # COVID-19-Portfolio-Project
-SQL Data Exploration
-
-
-
+####SQL Data Exploration
 
 
 
@@ -99,6 +96,8 @@ and population <> 0
 --where location like '%india%'
 group by continent
 order by Highest_death_count desc
+
+```
 
 ```
 
