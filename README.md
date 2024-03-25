@@ -128,5 +128,76 @@ ORDER BY CD.location, CD.date
 
 ```
 
+```
+
+-- Using CTE to perform Calculation on Partition By in previous query
+
+With PopvsVac (Continent, Location, Date, Population, New_Vaccinations, RollingPeopleVaccinated)
+as
+(
+SELECT CD.continent, CD.location, CD.date, CD.population,CV.new_vaccinations
+, SUM(CV.new_vaccinations) OVER (PARTITION BY CD.LOCATION ORDER BY CD.LOCATION,CD.DATE) AS ROLLINGPEOPLEVACCINATED
+FROM DBO.CovidDeaths AS CD
+JOIN DBO.CovidVaccinations AS CV
+ON CD.location = CV.location
+AND CD.date = CV.date
+--ORDER BY CD.location, CD.date
+)
+SELECT *, (RollingPeopleVaccinated/Population)*100
+FROM PopvsVac
+
+
+```
+
+-- Using Temp Table to perform Calculation on Partition By in previous query
+
+DROP Table if exists #PercentPopulationVaccinated
+Create Table #PercentPopulationVaccinated
+(
+Continent nvarchar(255),
+Location nvarchar(255),
+Date datetime,
+Population numeric,
+New_vaccinations numeric,
+RollingPeopleVaccinated numeric
+)
+
+Insert into #PercentPopulationVaccinated
+SELECT CD.continent, CD.location, CD.date, CD.population,CV.new_vaccinations
+, SUM(CV.new_vaccinations) OVER (PARTITION BY CD.LOCATION ORDER BY CD.LOCATION,CD.DATE) AS ROLLINGPEOPLEVACCINATED
+FROM DBO.CovidDeaths AS CD
+JOIN DBO.CovidVaccinations AS CV
+ON CD.location = CV.location
+AND CD.date = CV.date
+--where dea.continent is not null 
+--order by 2,3
+
+Select *, (RollingPeopleVaccinated/Population)*100
+From #PercentPopulationVaccinated
+--WHERE Population <> 0
+
+```
+
+```
+
+
+-- Creating View to store data for later visualizations
+
+Create View PercentPopulationVaccinated as
+SELECT CD.continent, CD.location, CD.date, CD.population,CV.new_vaccinations
+, SUM(CV.new_vaccinations) OVER (PARTITION BY CD.LOCATION ORDER BY CD.LOCATION,CD.DATE) AS ROLLINGPEOPLEVACCINATED
+FROM DBO.CovidDeaths AS CD
+JOIN DBO.CovidVaccinations AS CV
+ON CD.location = CV.location
+AND CD.date = CV.date
+
+
+SELECT *
+FROM PercentPopulationVaccinated
+
+```
+
+
+
 
 
