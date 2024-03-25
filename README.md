@@ -149,6 +149,8 @@ FROM PopvsVac
 
 ```
 
+```
+
 -- Using Temp Table to perform Calculation on Partition By in previous query
 
 DROP Table if exists #PercentPopulationVaccinated
@@ -179,7 +181,6 @@ From #PercentPopulationVaccinated
 ```
 
 ```
-
 
 -- Creating View to store data for later visualizations
 
