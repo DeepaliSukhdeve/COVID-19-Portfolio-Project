@@ -32,6 +32,7 @@ order by location
 ```
 
 -- Analyze Total Cases vs Total Deaths
+
 select location,date,total_cases,total_deaths,(total_deaths/total_cases)*100 as Deathpercentage
 from PortfolioProject.dbo.CovidDeaths
 where location like '%india%'
@@ -39,10 +40,12 @@ order by location,date
 
 ```
 
+
 ```
 
 -- Total Cases vs Population
 -- Shows what percentage of population infected with Covid
+
 select location,date,total_cases,population, (total_cases/population)*100 as Infected_percentage
 from PortfolioProject.dbo.CovidDeaths
 where location like '%states%'
@@ -50,9 +53,11 @@ order by location,date
 
 ```
 
+
 ```
 
 -- Countries with Highest Infection Rate compared to population
+
 select location, population, max(total_cases) as Highest_Infection_count,(max(total_cases)/population)*100 as PercentpopulationInfected
 from PortfolioProject.dbo.CovidDeaths
 where total_cases <>  0
@@ -61,11 +66,13 @@ and population <> 0
 group by location,population
 order by PercentpopulationInfected desc
 
+
 ```
 
 ```
 
 -- Countries with Highest Death Count per Population
+
 select location,population,max(total_deaths) as Highest_death_count
 from PortfolioProject.dbo.CovidDeaths
 where total_cases <>  0
